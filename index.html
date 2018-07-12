@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width" />
+  <script type="text/javascript" src="assets/js/lan-emoji.js"></script>
+  <link rel="stylesheet" href="assets/css/lan-emoji.css">
+
+  <style>
+    body {
+      margin: 0;
+      height: 100%;
+      width: 100%;
+    }
+
+    .emoji__contain {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .contain {
+      width: 700px;
+      height: 500px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .cantain {
+      flex-grow: 1;
+      width: 100%;
+      height: 250px;
+    }
+
+    #editArea {
+      height: 80px;
+      border: #d2d3d6 1px solid;
+    }
+
+    .action {
+      display: flex;
+      align-items: center;
+      justify-content: space-evenly;
+      padding: 2%;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page-header">
+    <h1 class="project-name">Lan-emoji</h1>
+    <h2 class="project-tagline">editable div has ability to insert emoji.
+      <br>可編輯div具備插入表情功能。 </h2>
+    <a href="https://github.com/chingfanglin/Lan-emoji" class="btn">View on GitHub</a>
+    <a href="https://github.com/chingfanglin/Lan-emoji/zipball/master" class="btn">Download .zip</a>
+    <a href="https://github.com/chingfanglin/Lan-emoji/tarball/master" class="btn">Download .tar.gz</a>
+  </div>
+  <div class="emoji__contain">
+    <div class="contain">
+      <div class="cantain"></div>
+      <div id="emoji"></div>
+      <div id="editArea" name="editArea" contenteditable="true"></div>
+      <div class="action">
+        <img id="btn" class="paperfly__img" src="assets/img/tieba/7.jpg" />
+        <button onclick="emojiChange()">emojiChange</button>
+        <button onclick="emojiParse()">emojiParse</button>
+      </div>
+    </div>
+  </div>
+  <script>
+
+    const option = {
+      editor: 'editArea',
+      btn: 'btn',
+      placeholder: ":{alias}:",
+      icons: [{
+        path: 'assets/img/tieba',
+        alias: {
+          1: "hehe",
+          2: "haha",
+          3: "tushe",
+          4: "a",
+          5: "ku",
+          6: "lu",
+          7: "kaixin",
+          8: "han",
+          9: "lei",
+          10: "heixian",
+          11: "bishi",
+          12: "bugaoxing",
+          13: "zhenbang",
+          14: "qian",
+          15: "yiwen",
+          16: "yinxian",
+          17: "tu",
+          18: "yi",
+          19: "weiqu",
+          20: "huaxin",
+          21: "hu",
+          22: "xiaonian",
+          23: "neng",
+          24: "taikaixin",
+          25: "huaji",
+          26: "mianqiang",
+          27: "kuanghan",
+          28: "guai",
+          29: "shuijiao",
+          30: "jinku",
+          31: "shengqi",
+          32: "jinya",
+          33: "pen",
+          34: "aixin",
+          35: "xinsui",
+          36: "meigui",
+          37: "liwu",
+          38: "caihong",
+          39: "xxyl",
+          40: "taiyang",
+          41: "qianbi",
+          42: "dnegpao",
+          43: "chabei",
+          44: "dangao",
+          45: "yinyue",
+          46: "haha2",
+          47: "shenli",
+          48: "damuzhi",
+          49: "ruo",
+          50: "OK"
+        }
+      }]
+    }
+
+    var _emoji = new emoji(option)
+
+    function emojiChange() {
+      _emoji.emojiChange()
+    }
+
+    function emojiParse() {
+      _emoji.emojiParse(document.querySelectorAll('#editArea'))
+    }
+  </script>
+</body>
+
+</html>
