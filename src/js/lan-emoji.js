@@ -4,7 +4,7 @@ var emoji = function(option) {
     const alias = option.icon[0].alias
     const path = option.icon[0].path
     const key = Object.keys(alias).find(key => alias[key] === emoji_code)
-    const source = `<img src="${path}/${key}.jpg" class="editor_img_${uuid}">`
+    const source = `<img src="${path}/${key}.jpg" class="editor_img_${uuid}" data-emoji_code="${emoji_code}">`
 
     document.getElementById(editor).focus()
     var selection = window.getSelection
@@ -61,7 +61,7 @@ var emoji = function(option) {
   this.uuid = uuid
 
   if (editor) {
-    let target = false
+    toggle = false
     let dom = ''
     const size = Object.keys(option.icon[0].alias).length
     const path = option.icon[0].path
@@ -94,8 +94,8 @@ var emoji = function(option) {
       _emoji_button.addEventListener(
         'click',
         function() {
-          target = !target
-          if (target) {
+          toggle = !toggle
+          if (toggle) {
             _emoji.classList.remove('box-close')
             _emoji.classList.add('box-open')
           } else {
@@ -125,7 +125,7 @@ emoji.prototype.emojiParse = function(dom) {
     const replace = innerHTML.replace(/:([\s\S]+?):/g, function($0, $1) {
       var n = revertAlias[$1]
       if (n) {
-        return `<img src="${path}/${n}.jpg" class="editor_img_${uuid}">`
+        return `<img src="${path}/${n}.jpg" class="editor_img_${uuid}" data-emoji_code="${$1}">`
       } else {
         return $0
       }
@@ -135,14 +135,24 @@ emoji.prototype.emojiParse = function(dom) {
 }
 
 emoji.prototype.emojiChange = function() {
-  const alias = this.option.icon[0].alias
   const uuid = this.uuid
   const emojiImage = document.querySelectorAll(`.editor_img_${uuid}`)
 
   for (let index = 0; index < emojiImage.length; index++) {
-    const fullUri = emojiImage[index].src
-    const filename = fullUri.replace(/^.*?([^\/]+)\..+?$/, '$1')
-    const name = alias[filename]
-    emojiImage[index].outerHTML = `:${name}:`
+    const emoji_code = emojiImage[index].dataset.emoji_code
+    emojiImage[index].outerHTML = `:${emoji_code}:`
+  }
+}
+
+emoji.prototype.toggle = function() {
+  const _emoji = document.getElementById('emoji')
+  const toggle = _emoji.className === 'box-close'
+
+  if (toggle) {
+    _emoji.classList.remove('box-close')
+    _emoji.classList.add('box-open')
+  } else {
+    _emoji.classList.remove('box-open')
+    _emoji.classList.add('box-close')
   }
 }

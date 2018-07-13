@@ -47,6 +47,7 @@
               <img id="btn" class="paperfly__img" src="dist/img/tieba/7.jpg" />
               <button onclick="emojiChange()">emojiChange</button>
               <button onclick="emojiParse()">emojiParse</button>
+              <button onclick="emojiToggle()">emojiToggle</button>
             </div>
           </div>
         </div>
@@ -55,6 +56,10 @@
       <div class="code">
         <pre class="hljs">
           <code>
+              &lt;body&gt;
+                &lt;div id="emoji"&gt;&lt;/div&gt;
+              &lt;/body&gt;
+
               const option = {
                 editor: 'editArea',   //editable div id
                 btn: 'btn',           //button id
@@ -137,7 +142,7 @@
             <div class="cantain">文本轉換 text parse</div>
             <div id="emoji"></div>
             <div id="editAreaParse" name="editAreaParse" contenteditable="true">
-                Today :taiyang: is a beautiful day :aixin:
+              Today :taiyang: is a beautiful day :aixin:
             </div>
             <div class="action">
               <button onclick="editAreaParse()">emojiParse</button>
@@ -149,6 +154,10 @@
       <div class="code">
         <pre class="hljs">
             <code>
+                &lt;body&gt;
+                  &lt;div id="emoji"&gt;&lt;/div&gt;
+                &lt;/body&gt;
+                
                 const _option = {
                   icon: [{
                     path: 'dist/img/tieba',
@@ -235,9 +244,21 @@
   &lt;/head&gt;
   &lt;body&gt;
     &lt;script src="js/lan.emoji.js">&lt;/script&gt;
+
+    &lt;div id="emoji"&gt;&lt;/div&gt;
   &lt;/body&gt;
           </code>
         </pre>
+      </div>
+    </div>
+
+    <div class="usage">
+
+      <div>
+
+        <h2>方法 method</h2>
+        <h3>切換顯示隱藏表情面板。 show or hide emoji panel.</h3>
+        <pre class="hljs"><code class="bash">_emoji.toggle()</code></pre>
       </div>
     </div>
     <footer class="site-footer">
@@ -319,6 +340,10 @@
 
     function emojiParse() {
       _emoji.emojiParse(document.querySelectorAll('#editArea'))
+    }
+
+    function emojiToggle() {
+      _emoji.toggle()
     }
 
     const _option = {
