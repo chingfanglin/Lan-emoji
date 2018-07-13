@@ -7,6 +7,7 @@
  ## 預覽 Preview
 ![Alt text](https://raw.githubusercontent.com/chingfanglin/Lan-emoji/master/dist/img/demo.png)
   
+[Demo](https://chingfanglin.github.io/Lan-emoji/)
 
 ## 功能 Features
 * 不須引用其他  Framework/Library。
