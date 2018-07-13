@@ -6,6 +6,7 @@
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.176);
   transition: max-height 0.35s ease-out;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .emoji_content {

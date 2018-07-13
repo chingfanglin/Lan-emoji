@@ -1,57 +1,10 @@
 var emoji = function(option) {
-  this.option = option
-  this.placeholder = option.placeholder
-  let target = false
-
-  const size = Object.keys(option.icons[0].alias).length
-  let dom = ''
-
-  for (i = 1; i < size; i++) {
-    dom += `
-      <div class="emoji_content" data-emoji_code="${option.icons[0].alias[i]}">
-        <img src="assets/img/tieba/${i}.jpg" class="mCS_img_loaded">
-      </div>
-      `
-  }
-  const _emoji = document.getElementById('emoji')
-
-  _emoji.classList.add('box-close')
-  _emoji.innerHTML = dom
-
-  const _emoji_content = document.getElementsByClassName('emoji_content')
-  const _emoji_button = document.getElementById(this.option.btn)
-
-  for (let i = 0; i < _emoji_content.length; i++) {
-    _emoji_content[i].addEventListener(
-      'click',
-      function() {
-        const emoji_code = this.dataset.emoji_code
-        _insertAtCursor(emoji_code, option)
-      },
-      false
-    )
-  }
-
-  _emoji_button.addEventListener(
-    'click',
-    function() {
-      target = !target
-      if (target) {
-        _emoji.classList.remove('box-close')
-        _emoji.classList.add('box-open')
-      } else {
-        _emoji.classList.remove('box-open')
-        _emoji.classList.add('box-close')
-      }
-    },
-    false
-  )
-
-  _insertAtCursor = function(emoji_code, option) {
+  _insertAtCursor = function(emoji_code, option, uuid) {
     const editor = option.editor
-    const alias = option.icons[0].alias
+    const alias = option.icon[0].alias
+    const path = option.icon[0].path
     const key = Object.keys(alias).find(key => alias[key] === emoji_code)
-    const source = `<img src="assets/img/tieba/${key}.jpg" class="editor_img">`
+    const source = `<img src="${path}/${key}.jpg" class="editor_img_${uuid}">`
 
     document.getElementById(editor).focus()
     var selection = window.getSelection
@@ -93,11 +46,73 @@ var emoji = function(option) {
       selection.addRange(range)
     }
   }
+
+  _uuid = function() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+      var r = (Math.random() * 16) | 0,
+        v = c == 'x' ? r : (r & 0x3) | 0x8
+      return v.toString(16)
+    })
+  }
+
+  const uuid = _uuid()
+  const editor = option.editor
+  this.option = option
+  this.uuid = uuid
+
+  if (editor) {
+    let target = false
+    let dom = ''
+    const size = Object.keys(option.icon[0].alias).length
+    const path = option.icon[0].path
+
+    for (i = 1; i < size; i++) {
+      dom += `
+      <div class="emoji_content" data-emoji_code="${option.icon[0].alias[i]}">
+        <img src="${path}/${i}.jpg">
+      </div>
+      `
+    }
+    const _emoji = document.getElementById('emoji')
+
+    _emoji.classList.add('box-close')
+    _emoji.innerHTML = dom
+
+    const _emoji_content = document.getElementsByClassName('emoji_content')
+    const _emoji_button = document.getElementById(this.option.btn)
+
+    for (let i = 0; i < _emoji_content.length; i++) {
+      _emoji_content[i].addEventListener(
+        'click',
+        function() {
+          const emoji_code = this.dataset.emoji_code
+          _insertAtCursor(emoji_code, option, uuid)
+        },
+        false
+      )
+
+      _emoji_button.addEventListener(
+        'click',
+        function() {
+          target = !target
+          if (target) {
+            _emoji.classList.remove('box-close')
+            _emoji.classList.add('box-open')
+          } else {
+            _emoji.classList.remove('box-open')
+            _emoji.classList.add('box-close')
+          }
+        },
+        false
+      )
+    }
+  }
 }
 
 emoji.prototype.emojiParse = function(dom) {
-  const alias = this.option.icons[0].alias
-  const placeholder = this.placeholder
+  const alias = this.option.icon[0].alias
+  const path = option.icon[0].path
+  const uuid = this.uuid
   let revertAlias = {}
 
   for (var attr in alias) {
@@ -105,13 +120,12 @@ emoji.prototype.emojiParse = function(dom) {
       revertAlias[alias[attr]] = attr
     }
   }
-  
   for (let index = 0; index < dom.length; index++) {
     const innerHTML = dom[index].innerHTML
     const replace = innerHTML.replace(/:([\s\S]+?):/g, function($0, $1) {
       var n = revertAlias[$1]
       if (n) {
-        return `<img src="assets/img/tieba/${n}.jpg" class="editor_img">`
+        return `<img src="${path}/${n}.jpg" class="editor_img_${uuid}">`
       } else {
         return $0
       }
@@ -121,8 +135,9 @@ emoji.prototype.emojiParse = function(dom) {
 }
 
 emoji.prototype.emojiChange = function() {
-  const alias = this.option.icons[0].alias
-  const emojiImage = document.querySelectorAll('.editor_img')
+  const alias = this.option.icon[0].alias
+  const uuid = this.uuid
+  const emojiImage = document.querySelectorAll(`.editor_img_${uuid}`)
 
   for (let index = 0; index < emojiImage.length; index++) {
     const fullUri = emojiImage[index].src
