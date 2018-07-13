@@ -3,6 +3,10 @@
 ##可編輯div具備插入表情功能
 
   editable div has ability to insert emoji
+  
+ ## 預覽 Preview
+![Alt text](https://raw.githubusercontent.com/chingfanglin/Lan-emoji/master/dist/img/demo.png)
+  
 
 ## 功能 Features
 * 不須引用其他  Framework/Library。
