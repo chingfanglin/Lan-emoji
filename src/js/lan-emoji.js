@@ -61,7 +61,6 @@ var emoji = function(option) {
   this.uuid = uuid
 
   if (editor) {
-    toggle = false
     let dom = ''
     const size = Object.keys(option.icon[0].alias).length
     const path = option.icon[0].path
@@ -84,28 +83,27 @@ var emoji = function(option) {
     for (let i = 0; i < _emoji_content.length; i++) {
       _emoji_content[i].addEventListener(
         'click',
-        function() {
+        function () {
           const emoji_code = this.dataset.emoji_code
           _insertAtCursor(emoji_code, option, uuid)
         },
         false
       )
+    }
+    _emoji_button.addEventListener(
+     'click',
+     function () {
+        const _emoji = document.getElementById('emoji')
+        const toggle = _emoji.className === 'box-close'
 
-      _emoji_button.addEventListener(
-        'click',
-        function() {
-          toggle = !toggle
-          if (toggle) {
+        if (toggle) {
             _emoji.classList.remove('box-close')
             _emoji.classList.add('box-open')
-          } else {
+        } else {
             _emoji.classList.remove('box-open')
             _emoji.classList.add('box-close')
-          }
-        },
-        false
-      )
-    }
+        }
+     },false)
   }
 }
 
@@ -144,9 +142,9 @@ emoji.prototype.emojiChange = function() {
   }
 }
 
-emoji.prototype.toggle = function() {
+emoji.prototype.toggle = function (isShow) {
   const _emoji = document.getElementById('emoji')
-  const toggle = _emoji.className === 'box-close'
+  const toggle = isShow || _emoji.className === 'box-close'
 
   if (toggle) {
     _emoji.classList.remove('box-close')
