@@ -47,6 +47,19 @@ var emoji = function(option) {
     }
   }
 
+  _target = function(isShow) {
+    const _emoji = document.getElementById('emoji')
+    const toggle = isShow === void 0 ? _emoji.className === 'box-close' : isShow
+
+    if (toggle) {
+      _emoji.classList.remove('box-close')
+      _emoji.classList.add('box-open')
+    } else {
+      _emoji.classList.remove('box-open')
+      _emoji.classList.add('box-close')
+    }
+  }
+
   _uuid = function() {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
       var r = (Math.random() * 16) | 0,
@@ -57,8 +70,10 @@ var emoji = function(option) {
 
   const uuid = _uuid()
   const editor = option.editor
+  const btn = option.btn
   this.option = option
   this.uuid = uuid
+  this.target = _target
 
   if (editor) {
     let dom = ''
@@ -67,10 +82,10 @@ var emoji = function(option) {
 
     for (i = 1; i < size; i++) {
       dom += `
-      <div class="emoji_content" data-emoji_code="${option.icon[0].alias[i]}">
-        <img src="${path}/${i}.jpg">
-      </div>
-      `
+    <div class="emoji_content" data-emoji_code="${option.icon[0].alias[i]}">
+      <img src="${path}/${i}.jpg">
+    </div>
+    `
     }
     const _emoji = document.getElementById('emoji')
 
@@ -78,32 +93,26 @@ var emoji = function(option) {
     _emoji.innerHTML = dom
 
     const _emoji_content = document.getElementsByClassName('emoji_content')
-    const _emoji_button = document.getElementById(this.option.btn)
+    const _emoji_button = document.getElementById(btn)
 
     for (let i = 0; i < _emoji_content.length; i++) {
       _emoji_content[i].addEventListener(
         'click',
-        function () {
+        function() {
           const emoji_code = this.dataset.emoji_code
           _insertAtCursor(emoji_code, option, uuid)
         },
         false
       )
     }
-    _emoji_button.addEventListener(
-     'click',
-     function () {
-        const _emoji = document.getElementById('emoji')
-        const toggle = _emoji.className === 'box-close'
 
-        if (toggle) {
-            _emoji.classList.remove('box-close')
-            _emoji.classList.add('box-open')
-        } else {
-            _emoji.classList.remove('box-open')
-            _emoji.classList.add('box-close')
-        }
-     },false)
+    _emoji_button.addEventListener(
+      'click',
+      function() {
+        _target()
+      },
+      false
+    )
   }
 }
 
@@ -142,15 +151,6 @@ emoji.prototype.emojiChange = function() {
   }
 }
 
-emoji.prototype.toggle = function (isShow) {
-  const _emoji = document.getElementById('emoji')
-  const toggle = isShow || _emoji.className === 'box-close'
-
-  if (toggle) {
-    _emoji.classList.remove('box-close')
-    _emoji.classList.add('box-open')
-  } else {
-    _emoji.classList.remove('box-open')
-    _emoji.classList.add('box-close')
-  }
+emoji.prototype.toggle = function(isShow) {
+  this.target(isShow)
 }
